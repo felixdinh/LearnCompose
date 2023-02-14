@@ -4,14 +4,14 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,7 +35,6 @@ fun ArtSpaceScreen() {
     }
 
     val currentItem = gallery[currentArtWork]
-    var showTooltip by remember { mutableStateOf(false) }
 
     Log.d("gallery: size", "${gallery.size}")
     Log.d("gallery: ", "current${currentArtWork}")
@@ -44,25 +43,21 @@ fun ArtSpaceScreen() {
             .fillMaxSize()
             .padding(vertical = 16.dp),
     ) {
-        Box {
-            Column(
-                Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.SpaceBetween,
-            ) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+        ) {
+            var showTooltip by remember { mutableStateOf(false) }
+            BoxWithToolTip {
                 Card(
                     Modifier
                         .background(MaterialTheme.colors.background)
                         .wrapContentSize()
                         .border(1.dp, Color.Black)
                         .weight(5f)
-                        .align(Alignment.CenterHorizontally)
-                        .pointerInput(Unit) {
-                            detectTapGestures(
-                                onLongPress = { showTooltip = true }
-                            )
-                        },
+                        .align(Alignment.CenterHorizontally),
                     elevation = 10.dp,
                 ) {
                     Image(
@@ -75,29 +70,49 @@ fun ArtSpaceScreen() {
                         contentDescription = currentItem.title
                     )
                 }
-                Spacer(Modifier.height(8.dp))
-                ArtworkTitle(
-                    title = currentItem.title,
-                    artist = currentItem.artist,
-                    year = currentItem.year,
-                    modifier = Modifier.weight(1f)
-                )
-                Text("${currentArtWork + 1}/${gallery.size}", Modifier.padding(bottom = 16.dp))
-                ButtonGroup(onPre = {
-                    if (currentArtWork >= 1) {
-                        currentArtWork--
-                    }
-                }, onNext = {
-                    Log.d("gallery: isNext", "${currentArtWork <= gallery.size - 1}")
-                    if (currentArtWork < (gallery.size - 1)) {
-                        currentArtWork++
-                    }
-
-                })
             }
-            ToolTip
+            Spacer(Modifier.height(8.dp))
+            ArtworkTitle(
+                title = currentItem.title,
+                artist = currentItem.artist,
+                year = currentItem.year,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                "${currentArtWork + 1}/${gallery.size}",
+                Modifier
+                    .padding(bottom = 16.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+            ButtonGroup(onPre = {
+                if (currentArtWork >= 1) {
+                    currentArtWork--
+                }
+            }, onNext = {
+                Log.d("gallery: isNext", "${currentArtWork <= gallery.size - 1}")
+                if (currentArtWork < (gallery.size - 1)) {
+                    currentArtWork++
+                }
+
+            })
         }
 
+    }
+}
+
+@Composable
+fun BoxWithToolTip(content: @Composable () -> Unit) {
+    var toolTipShow by remember { mutableStateOf(false) }
+    Box() {
+        content
+        Surface(
+            modifier = Modifier.shadow(4.dp),
+            shape = RoundedCornerShape(4.dp)
+        ) {
+            Text("Do a little action!!",modifier = Modifier.padding(10.dp))
+
+
+        }
     }
 }
 

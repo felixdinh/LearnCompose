@@ -5,12 +5,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -50,26 +48,24 @@ fun ArtSpaceScreen() {
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             var showTooltip by remember { mutableStateOf(false) }
-            BoxWithToolTip {
-                Card(
-                    Modifier
-                        .background(MaterialTheme.colors.background)
+            Card(
+                Modifier
+                    .background(MaterialTheme.colors.background)
+                    .wrapContentSize()
+                    .border(1.dp, Color.Black)
+                    .weight(5f)
+                    .align(Alignment.CenterHorizontally),
+                elevation = 10.dp,
+            ) {
+                Image(
+                    modifier = Modifier
                         .wrapContentSize()
-                        .border(1.dp, Color.Black)
-                        .weight(5f)
-                        .align(Alignment.CenterHorizontally),
-                    elevation = 10.dp,
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(24.dp),
-                        alignment = Alignment.Center,
-                        contentScale = ContentScale.FillHeight,
-                        painter = painterResource(id = currentItem.image),
-                        contentDescription = currentItem.title
-                    )
-                }
+                        .padding(24.dp),
+                    alignment = Alignment.Center,
+                    contentScale = ContentScale.FillHeight,
+                    painter = painterResource(id = currentItem.image),
+                    contentDescription = currentItem.title
+                )
             }
             Spacer(Modifier.height(8.dp))
             ArtworkTitle(
@@ -99,23 +95,6 @@ fun ArtSpaceScreen() {
 
     }
 }
-
-@Composable
-fun BoxWithToolTip(content: @Composable () -> Unit) {
-    var toolTipShow by remember { mutableStateOf(false) }
-    Box() {
-        content
-        Surface(
-            modifier = Modifier.shadow(4.dp),
-            shape = RoundedCornerShape(4.dp)
-        ) {
-            Text("Do a little action!!",modifier = Modifier.padding(10.dp))
-
-
-        }
-    }
-}
-
 @Composable
 fun ArtworkTitle(title: String, artist: String, year: Int, modifier: Modifier) {
     Card(

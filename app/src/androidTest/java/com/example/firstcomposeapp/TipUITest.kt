@@ -16,7 +16,7 @@ class TipUITest {
     fun calculate_20_percent(){
         composeTestRule.setContent{
             FirstComposeAppTheme {
-                TipTimeScreen()
+                CalculateTipScreen()
             }
         }
         composeTestRule.onNodeWithText("Bill amount").performTextInput("10")

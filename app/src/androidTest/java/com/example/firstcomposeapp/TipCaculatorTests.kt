@@ -1,5 +1,6 @@
 package com.example.firstcomposeapp
 
+import com.example.firstcomposeapp.screen.calculateTip
 import org.junit.Assert
 import org.junit.Test
 import java.text.NumberFormat

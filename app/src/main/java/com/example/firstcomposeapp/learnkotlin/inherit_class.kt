@@ -1,4 +1,4 @@
-package com.example.firstcomposeapp
+package com.example.firstcomposeapp.learnkotlin
 
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty

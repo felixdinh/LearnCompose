@@ -1,4 +1,4 @@
-package com.example.firstcomposeapp
+package com.example.firstcomposeapp.screen
 
 import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
@@ -18,14 +18,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.firstcomposeapp.R
 import java.text.NumberFormat
 
 @Composable
 fun CalculateTipScreen() {
+
     var amountInput by remember { mutableStateOf("") }
     var tipInput by remember { mutableStateOf("") }
     var switchChecked by remember { mutableStateOf(false) }
-
     val focusManager = LocalFocusManager.current
 
     val billAmount = amountInput.toDoubleOrNull() ?: 0.0

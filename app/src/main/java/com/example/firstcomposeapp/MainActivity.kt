@@ -5,6 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.firstcomposeapp.model.Affirmation
+import com.example.firstcomposeapp.screen.AffirmationApp
+import com.example.firstcomposeapp.screen.AffirmationCard
 import com.example.firstcomposeapp.ui.theme.FirstComposeAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,13 +16,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             FirstComposeAppTheme {
                 // A surface container using the 'background' color from the theme
-                ArtSpaceScreen()
+                AffirmationApp()
             }
         }
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = false)
 @Composable
 fun DefaultPreview() {
     FirstComposeAppTheme {
@@ -27,7 +30,8 @@ fun DefaultPreview() {
 //        Article()
 //        TaskManager()
 //        lemonadeApp()
-//        TipTimeScreen()
-        ArtSpaceScreen()
+        //CalculateTipScreen()
+        //ArtSpaceScreen()
+        AffirmationCard(affirmation = Affirmation( R.string.affirmation1,R.drawable.image1))
     }
 }

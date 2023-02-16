@@ -1,4 +1,4 @@
-package com.example.firstcomposeapp.learnkotlin
+package com.example.firstcomposeapp.kotlin_chanllenge
 
 fun main() {
     Quiz().printProgressBar()

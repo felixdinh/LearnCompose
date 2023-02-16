@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Learn Jetpack Compose</string>
+    <string name="app_name">Lemonade App</string>
     <string name="tree_txt">Tap the lemon tree to select a lemon</string>
     <string name="squeeze_txt">Keep tapping the lemon to squeeze it</string>
     <string name="drink_txt">Tap the lemonade to drink it</string>

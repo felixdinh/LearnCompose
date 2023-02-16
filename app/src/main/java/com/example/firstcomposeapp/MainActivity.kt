@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.firstcomposeapp.screen.Quadrant
 import com.example.firstcomposeapp.ui.theme.FirstComposeAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             FirstComposeAppTheme {
                 // A surface container using the 'background' color from the theme
-                MyApp()
+                Quadrant()
             }
         }
     }
@@ -38,6 +39,6 @@ fun MyApp() {
 @Composable
 fun DefaultPreview() {
     FirstComposeAppTheme {
-        MyApp()
+        Quadrant()
     }
 }

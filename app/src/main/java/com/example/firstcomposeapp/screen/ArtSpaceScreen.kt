@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -137,7 +138,7 @@ fun ButtonGroup(onPre: () -> Unit, onNext: () -> Unit) {
                 .fillMaxWidth()
                 .weight(1f),
         ) {
-            Text(text = "Previous")
+            Text(text = stringResource(R.string.previous_txt))
         }
         Spacer(modifier = Modifier.width(8.dp))
         Button(
@@ -146,7 +147,7 @@ fun ButtonGroup(onPre: () -> Unit, onNext: () -> Unit) {
                 .fillMaxWidth()
                 .weight(1f)
         ) {
-            Text(text = "Next")
+            Text(text = stringResource(R.string.next_txt))
         }
     }
 }

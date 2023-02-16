@@ -1,4 +1,4 @@
-package com.example.firstcomposeapp.screen
+package com.example.firstcomposeapp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -18,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.firstcomposeapp.R
 import com.example.firstcomposeapp.data.Datasource
 import com.example.firstcomposeapp.model.Affirmation
 import com.example.firstcomposeapp.ui.theme.FirstComposeAppTheme
@@ -67,5 +66,5 @@ private fun AffirmationList(affirmationList: List<Affirmation>, modifier: Modifi
 @Preview
 @Composable
 fun AffirmationPreview(){
-    AffirmationCard(affirmation = Affirmation(R.string.affirmation1,R.drawable.art_1))
+    AffirmationCard(affirmation = Affirmation(R.string.affirmation1,R.drawable.image1))
 }

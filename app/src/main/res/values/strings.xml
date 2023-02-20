@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Learn Jetpack Compose</string>
+    <string name="app_name">Heroes App</string>
+    <string name="hero1">Hulk</string>
+    <string name="hero2">Iron man</string>
+    <string name="hero3">Batman</string>
+    <string name="hero4">Supper man</string>
+    <string name="hero5">Wonder woman</string>
+    <string name="hero6">Vakery</string>
+    <string name="quote1">It is a bird? Is it a plane? No it\'s Jetpack Compose!</string>
 </resources>

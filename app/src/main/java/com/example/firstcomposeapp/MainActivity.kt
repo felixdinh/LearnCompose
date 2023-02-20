@@ -20,6 +20,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -28,6 +32,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -40,6 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.firstcomposeapp.data.Dog
 import com.example.firstcomposeapp.data.dogs
+import com.example.firstcomposeapp.ui.theme.Green25
 import com.example.firstcomposeapp.ui.theme.WoofTheme
 
 class MainActivity : ComponentActivity() {
@@ -82,20 +88,37 @@ fun WoofApp() {
 @Composable
 fun DogItem(dog: Dog, modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
+    val color by animateColorAsState(
+        targetValue = if (expanded) Green25 else MaterialTheme.colors.surface,
+    )
     Card(
         modifier = modifier.padding(8.dp),
         elevation = 4.dp
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
+        Column(
+            modifier = Modifier.animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow,
+                )
+            ).background(color = color)
         ) {
-            DogIcon(dog.imageResourceId)
-            DogInformation(dog.name, dog.age)
-            Spacer(Modifier.weight(1f))
-            DogItemButton(expanded = expanded, onClick = { }, modifier = Modifier)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                DogIcon(dog.imageResourceId)
+                DogInformation(dog.name, dog.age)
+                Spacer(Modifier.weight(1f))
+                DogItemButton(expanded = expanded, onClick = { expanded = !expanded }, modifier = Modifier)
+
+            }
+            if(expanded){
+                DogHobby(dog.hobbies, Modifier)
+            }
         }
+
     }
 }
 
@@ -104,13 +127,25 @@ fun DogItemButton(
     expanded: Boolean,
     onClick: () -> Unit,
     modifier: Modifier,
-){
+) {
     IconButton(onClick = onClick) {
         Icon(
-            imageVector = Icons.Filled.ExpandMore,
+            imageVector = if(expanded) Icons.Filled.ExpandLess else  Icons.Filled.ExpandMore,
             tint = MaterialTheme.colors.secondary,
             contentDescription = stringResource(id = R.string.expand_button_content_description)
         )
+    }
+}
+
+@Composable
+fun DogHobby(@StringRes dogHobby: Int, modifier: Modifier) {
+    Column(
+        modifier = modifier
+            .padding(16.dp)
+            .padding(top = 8.dp)
+    ) {
+        Text(stringResource(id = R.string.about), style = MaterialTheme.typography.h3)
+        Text(stringResource(id = dogHobby), style = MaterialTheme.typography.body1)
     }
 }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.firstcomposeapp.ui.theme
+package com.example.android.unscramble.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

@@ -1,6 +1,5 @@
 package com.example.firstcomposeapp.ui
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,93 +16,108 @@ class GameViewModel : ViewModel() {
 
     // Game UI state
     private val _uiState = MutableStateFlow(GameUiState())
-
-    // Backing property to avoid state updates from other classes
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
-
-    private lateinit var currentWord: String
-    private var usedWord: MutableSet<String> = mutableSetOf()
 
     var userGuess by mutableStateOf("")
         private set
+
+    // Set of words used in the game
+    private var usedWords: MutableSet<String> = mutableSetOf()
+    private lateinit var currentWord: String
 
     init {
         resetGame()
     }
 
-    private fun pickRandomWordAndShuffle(): String {
-        currentWord = allWords.random()
-        Log.d("GameViewModel", "Random word: $currentWord")
-        if (usedWord.contains(currentWord)) {
-            return pickRandomWordAndShuffle()
+    /*
+     * Re-initializes the game data to restart the game.
+     */
+    fun resetGame() {
+        usedWords.clear()
+        _uiState.value = GameUiState(currentScrambleWord = pickRandomWordAndShuffle())
+    }
+
+    /*
+     * Update the user's guess
+     */
+    fun updateUserGuess(guessedWord: String){
+        userGuess = guessedWord
+    }
+
+    /*
+     * Checks if the user's guess is correct.
+     * Increases the score accordingly.
+     */
+    fun checkUserGuess() {
+        if (userGuess.equals(currentWord, ignoreCase = true)) {
+            // User's guess is correct, increase the score
+            // and call updateGameState() to prepare the game for next round
+            val updatedScore = _uiState.value.score.plus(SCORE_INCREASE)
+            updateGameState(updatedScore)
+        } else {
+            // User's guess is wrong, show an error
+            _uiState.update { currentState ->
+                currentState.copy(isGuessWordWrong = true)
+            }
         }
-        usedWord.add(currentWord)
-        return shuffleCurrentWord(currentWord)
+        // Reset user guess
+        updateUserGuess("")
+    }
+
+    /*
+     * Skip to next word
+     */
+    fun skipWord() {
+        updateGameState(_uiState.value.score)
+        // Reset user guess
+        updateUserGuess("")
+    }
+
+    /*
+     * Picks a new currentWord and currentScrambledWord and updates UiState according to
+     * current game state.
+     */
+    private fun updateGameState(updatedScore: Int) {
+        if (usedWords.size == MAX_NO_OF_WORDS){
+            //Last round in the game, update isGameOver to true, don't pick a new word
+            _uiState.update { currentState ->
+                currentState.copy(
+                    isGuessWordWrong = false,
+                    score = updatedScore,
+                    isGameOver = true
+                )
+            }
+        } else{
+            // Normal round in the game
+            _uiState.update { currentState ->
+                currentState.copy(
+                    isGuessWordWrong = false,
+                    currentScrambleWord = pickRandomWordAndShuffle(),
+                    currentWordCount = currentState.currentWordCount.inc(),
+                    score = updatedScore
+                )
+            }
+        }
     }
 
     private fun shuffleCurrentWord(word: String): String {
         val tempWord = word.toCharArray()
         // Scramble the word
         tempWord.shuffle()
-        while (String(tempWord) == word) {
+        while (String(tempWord).equals(word)) {
             tempWord.shuffle()
         }
         return String(tempWord)
     }
 
-    fun resetGame() {
-        usedWord.clear()
-        _uiState.value = GameUiState(currentScrambleWord = pickRandomWordAndShuffle())
-    }
-
-    fun updateUserGuess(guessWord: String) {
-        userGuess = guessWord
-    }
-
-    fun checkUserGuess() {
-        if (userGuess.equals(currentWord, ignoreCase = true)) {
-            // User's guess correct, increase the score
-            // and call updateGameState() to prepare the game for next round
-            val updatedScore = _uiState.value.score.plus(SCORE_INCREASE)
-            updatedGameState(updatedScore)
+    private fun pickRandomWordAndShuffle(): String {
+        // Continue picking up a new random word until you get one that hasn't been used before
+        currentWord = allWords.random()
+        if (usedWords.contains(currentWord)) {
+            return pickRandomWordAndShuffle()
         } else {
-            // User's guess is wrong, show error
-            _uiState.update { currentState -> currentState.copy(isGuessWordWrong = true) }
+            usedWords.add(currentWord)
+            return shuffleCurrentWord(currentWord)
         }
-        // Reset user guess
-        updateUserGuess("")
     }
-
-    private fun updatedGameState(updatedScore: Int) {
-        if(usedWord.size == MAX_NO_OF_WORDS){
-            // Last round in the game
-            _uiState.update {
-                currentState -> currentState.copy(
-                    score = updatedScore,
-                    isGuessWordWrong = false,
-                    isGameOver = true
-                )
-            }
-        }
-        else{
-            // Normal round in the game
-            _uiState.update { currentState ->
-                currentState.copy(
-                    score = updatedScore,
-                    currentWordCount = currentState.currentWordCount.inc(),
-                    isGuessWordWrong = false,
-                    currentScrambleWord = pickRandomWordAndShuffle()
-                )
-            }
-        }
-
-    }
-
-    fun skipWord() {
-        updatedGameState(_uiState.value.score)
-        // Reset user guess
-        updateUserGuess("")
-    }
-
-
 }

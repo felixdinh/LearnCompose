@@ -13,14 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.firstcomposeapp.ui.theme
+package com.example.firstcomposeapp.data
 
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Shapes
-import androidx.compose.ui.unit.dp
+import com.example.firstcomposeapp.R
 
-val Shapes = Shapes(
-    small = RoundedCornerShape(4.dp),
-    medium = RoundedCornerShape(4.dp),
-    large = RoundedCornerShape(0.dp)
-)
+object DataSource {
+    val flavors = listOf(
+        R.string.vanilla,
+        R.string.chocolate,
+        R.string.red_velvet,
+        R.string.salted_caramel,
+        R.string.coffee
+    )
+
+    val quantityOptions = listOf(
+        Pair(R.string.one_cupcake, 1),
+        Pair(R.string.six_cupcakes, 6),
+        Pair(R.string.twelve_cupcakes, 12)
+    )
+}
